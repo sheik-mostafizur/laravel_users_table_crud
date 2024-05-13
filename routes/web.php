@@ -3,8 +3,14 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    return redirect('/products');
+});
+
+Route::get('/products', function () {
     return view('index');
 });
 
-Route::view('/users', 'users');
-Route::view('/users/add', 'add_user');
+
+Route::get('/products/create', function () {
+    return view('add_product');
+})->name('product.create');
