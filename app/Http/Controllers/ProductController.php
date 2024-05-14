@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -28,9 +29,25 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+
+        $path = null;
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images/products', 'public');
+        }
+
+        $product = new Product;
+        $product->name = $request->name;
+        $product->stroke = $request->stroke;
+        $product->price = $request->price;
+        $product->image = $path;
+        $product->save();
+
+        return redirect()->route('products.index')->with([
+            'status' => 'SUCCESS',
+            'message' => 'Product created successfully.',
+        ]);
     }
 
     /**
@@ -68,9 +85,16 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product->delete();
 
+        $image_path = public_path('storage/') . $product->image;
+
+        if (file_exists($image_path)) {
+            @unlink($image_path);
+        }
+
+
         return redirect()->route('products.index')->with([
-            'status' => 'Delete Successfully!',
-            'status_type' => 'DELETE'
+            'status' => 'DELETE',
+            'message' => 'Delete Successfully!',
         ]);
     }
 }

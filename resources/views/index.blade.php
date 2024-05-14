@@ -11,7 +11,8 @@
                 class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
                 <div>
                     <a href="{{ route('products.create') }}"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Default</a>
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add
+                        A Product</a>
 
                     <button id="dropdownActionButton" data-dropdown-toggle="dropdownAction"
                         class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
@@ -64,61 +65,67 @@
                 </div>
             </div>
 
-
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-16 py-3">
-                                <span class="sr-only">Image</span>
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Product
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Stroke
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Price
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($products as $product)
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="p-4">
-                                    <img src="{{ $product->image }}" class="w-16 md:w-32 max-w-full max-h-full  min-h-16"
-                                        alt="Apple Watch">
-                                </td>
-                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                                    {{ $product->name }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ $product->stroke }}
-                                </td>
-                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-                                    ${{ $product->price }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <a href="{{ route('products.edit', $product) }}"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                    <form class="inline-block" action="{{ route('products.destroy', $product->id) }}"
-                                        method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <input type="submit" value="Remove"
-                                            class="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">
-                                    </form>
-                                </td>
+            @if ($products->count())
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-16 py-3">
+                                    <span class="sr-only">Image</span>
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Product
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Stroke
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Price
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Action
+                                </th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            @foreach ($products as $product)
+                                <tr
+                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="p-4">
+                                        <img src="{{ asset('/storage') . '/' . $product->image }}"
+                                            class="w-16 md:w-32 max-w-full max-h-full  min-h-16" alt="Apple Watch">
+                                    </td>
+                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                                        {{ $product->name }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $product->stroke }}
+                                    </td>
+                                    <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                                        ${{ $product->price }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <a href="{{ route('products.edit', $product) }}"
+                                            class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                        <form class="inline-block" action="{{ route('products.destroy', $product->id) }}"
+                                            method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="submit" value="Remove"
+                                                class="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <h1
+                    class="text-center py-8 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+                    Please Add Products</h1>
+            @endif
+
         </div>
         <div class="my-6">
             {{ $products->links() }}
