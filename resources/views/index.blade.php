@@ -2,7 +2,7 @@
 
 @section('main')
     <section class="container mx-auto px-4">
-        @if (session('status') && session('status_type'))
+        @if (session()->has('status'))
             @include('alert')
         @endif
 
