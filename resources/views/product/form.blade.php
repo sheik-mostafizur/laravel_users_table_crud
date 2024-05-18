@@ -1,5 +1,5 @@
 <section class="h-screen flex items-center">
-    <form action="{{ isset($product) ? route('products.update') : route('products.store') }}"
+    <form action="{{ isset($product) ? route('products.update', $product->id) : route('products.store') }}"
         class="max-w-sm mx-auto min-w-96 shadow p-4" method="POST" enctype="multipart/form-data">
         @csrf
 
@@ -24,32 +24,33 @@
             <input type="text" id="name" name="name"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Product Name" value="{{ $product->name ?? old('name') }}" required />
-                @error('name')
-                    <P>{{$message}}</P>
-                @enderror
+            @error('name')
+                <p class="text-red-500">{{ $message }}</p>
+            @enderror
         </div>
         <div class="mb-5">
             <label for="stroke" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stroke</label>
             <input type="number" id="stroke" name="stroke" aria-describedby="helper-text-explanation"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="00" value="{{ $product->stroke ?? old('stroke') }}" required />
-                @error('stroke')
-                    <P>{{$message}}</P>
-                @enderror
+            @error('stroke')
+                <p class="text-red-500">{{ $message }}</p>
+            @enderror
         </div>
         <div class="mb-5">
             <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
             <input type="number" id="price" name="price" aria-describedby="helper-text-explanation"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="$00" value="{{ $product->price ?? old('price') }}" required />
-                @error('price')
-                    <P>{{$message}}</P>
-                @enderror
+            @error('price')
+                <p class="text-red-500">{{ $message }}</p>
+            @enderror
         </div>
         <div class="mb-5">
 
-            @isset($product)
-                <img class="h-auto max-w-full mb-2" src="{{ $product->image }}" alt="image description">
+            @isset($product->image)
+                <img id="product_image" class="h-auto max-w-full mb-2" src="{{ asset('/storage') . '/' . $product->image }}"
+                    alt="image description">
             @endisset
 
 
@@ -57,10 +58,13 @@
                 Image</label>
             <input name="image"
                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                id="image" type="file" accept="image/*">
-                @error('image')
-                    <P>{{$message}}</P>
-                @enderror
+                id="image" type="file" accept="image/*"
+                @if (isset($product->image)) onchange="if(this.files[0]) document.querySelector('#product_image').src=window.URL.createObjectURL(this.files[0])" @endif
+                @if (!isset($product->image)) required @endif value="{{ $product->image ?? old('image') }}">
+
+            @error('image')
+                <p class="text-red-500">{{ $message }}</p>
+            @enderror
         </div>
 
         <button type="submit"

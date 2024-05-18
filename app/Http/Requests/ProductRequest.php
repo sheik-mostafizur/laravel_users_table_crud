@@ -21,11 +21,19 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => 'required',
             'stroke' => 'required',
             'price' => 'required',
-            'image' => 'required|mimes:png,jpg,jpeg,webp|max:3000'
         ];
+
+        // Only require image if it's being uploaded
+        if ($this->getMethod() == 'POST' || $this->hasFile('image')) {
+            $rules['image'] = 'required|mimes:png,jpg,jpeg,webp|max:3000';
+        } else {
+            $rules['image'] = 'mimes:png,jpg,jpeg,webp|max:3000';
+        }
+
+        return $rules;
     }
 }

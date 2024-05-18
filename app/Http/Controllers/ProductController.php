@@ -71,10 +71,39 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, string $id)
     {
-        //
+        $product = Product::find($id);
+        if (!$product) {
+            return redirect()->route('products.index')->with('error', 'Product not found.');
+        }
+
+        // Update product fields
+        $product->name = $request->input('name');
+        $product->stroke = $request->input('stroke');
+        $product->price = $request->input('price');
+
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            $image_path = public_path('storage/') . $product->image;
+            if (file_exists($image_path)) {
+                @unlink($image_path);
+            }
+
+            // Store new image
+            $path = $request->file('image')->store('images/products', 'public');
+            $product->image = $path;
+        }
+
+        // Save updated product
+        $product->save();
+
+        return redirect()->route('products.index')->with([
+            'status' => 'SUCCESS',
+            'message' => 'Updated Successfully!',
+        ]);
     }
+
 
     /**
      * Remove the specified resource from storage.
