@@ -11,13 +11,28 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $keys =  ['name', 'stroke', 'price', 'created_at'];
+
+        $paramKey = $request->keys() ? $request->keys()[0] : null;
+        $order = $request->input($paramKey);
+
+        $products = null;
+        if (in_array($paramKey, $keys) && $order) {
+            if ($order == 'asc') {
+                $products = Product::asc($paramKey);
+            } else if ($order == 'desc') {
+                $products =  Product::desc($paramKey);
+            }
+        } else {
+            $products = Product::latest();
+        }
+
         return view('index', [
-            'products' => Product::latest()->paginate(10)
+            'products' => $products->paginate(10)
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      */
