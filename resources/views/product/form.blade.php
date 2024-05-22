@@ -49,7 +49,7 @@
         <div class="mb-5">
 
             @isset($product->image)
-                <img id="product_image" class="h-auto max-w-full mb-2" src="{{ asset('/storage') . '/' . $product->image }}"
+                <img id="product_image" class="h-auto max-w-full mb-2" src="{{ strpos($product->image, 'http://') || strpos($product->image, 'https://') === 0 ? $product->image : asset('/storage') . '/' . $product->image  }}"
                     alt="image description">
             @endisset
 
