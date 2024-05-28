@@ -1,3 +1,31 @@
+-   File and Directory
+-   All About Routing
+-   Blade Template
+-   Models and Migrations
+-   Model Factory and Seeder
+-   Model and Reading Data
+-   sessions, errors & Flash messages
+-   Edit
+-   Old values in form
+-   Reusability (Route Model Binding Form Requests, Mass Assignment)
+-   Tailwindcss & Alpinejs
+
+-   One to many relationship | Primary and foreign key
+-   Factory & Seeder
+-   Querying & Associating Related Models
+-   Local Query Scopes
+-   Aggregations on Relations
+-   Controller & Resource Controllers
+-   Cache and Caching Queries
+-   Invalidating Cache
+-   Components
+-   Scoped Resource Controller
+-   Rate Limiting
+
+
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">

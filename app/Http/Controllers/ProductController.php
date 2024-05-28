@@ -31,7 +31,7 @@ class ProductController extends Controller
         }
 
         return view('index', [
-            'products' => $products->paginate(10)
+            'products' => $products->latest()->paginate(10)
         ]);
     }
 
