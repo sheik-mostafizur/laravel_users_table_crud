@@ -12,6 +12,11 @@ class Product extends Model
     protected $fillable = ['name', 'stroke', 'price', 'image'];
 
 
+    public function scopeTitle(Builder $query, $title)
+    {
+        return $query->where('name', 'LIKE', '%' . $title . '%');
+    }
+
     public function scopeAsc(Builder $query, $column)
     {
         return $query->orderBy($column, 'asc');

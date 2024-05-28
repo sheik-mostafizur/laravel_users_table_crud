@@ -17,6 +17,7 @@ class ProductController extends Controller
 
         $paramKey = $request->keys() ? $request->keys()[0] : null;
         $order = $request->input($paramKey);
+        $title = $request->input('title');
 
         $products = null;
         if (in_array($paramKey, $keys) && $order) {
@@ -27,6 +28,10 @@ class ProductController extends Controller
             }
         } else {
             $products = Product::latest();
+        }
+
+        if($title){
+            $products = Product::title($title);
         }
 
         return view('index', [
