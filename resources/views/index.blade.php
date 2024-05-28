@@ -18,7 +18,7 @@
                 <div class="flex items-center gap-4">
 
                     <!-- Dropdown menu -->
-                    <div x-data="{ isFilterByDay: false }" class="relative">
+                    {{-- <div x-data="{ isFilterByDay: false }" class="relative">
                         <button x-on:click="isFilterByDay = !isFilterByDay" id="filterByDayButton"
                             data-dropdown-toggle="filterByDay"
                             class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
@@ -36,7 +36,7 @@
                             </svg>
                         </button>
                         <!-- Dropdown menu -->
-                        <form x-show="isFilterByDay" id="filterByDay" @click.outside="isFilterByDay = false"
+                        <form {{ route('products.index') }} method="GET" x-show="isFilterByDay" id="filterByDay" @click.outside="isFilterByDay = false"
                             class="z-10 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 absolute ">
                             <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
                                 aria-labelledby="filterByDayButton">
@@ -92,7 +92,7 @@
                                 </li>
                             </ul>
                         </form>
-                    </div>
+                    </div> --}}
                     <form {{ route('products.index') }} method="GET" class="flex items-center">
                         <label for="title" class="sr-only">Search</label>
                         <div class="relative w-full">
@@ -121,6 +121,10 @@
                 </div>
 
             </div>
+            @php
+            $queryParams = request()->all();
+        @endphp
+
 
             @if ($products->count())
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -135,7 +139,7 @@
                                     <div class="flex items-center">
                                         Created | Updated
                                         <a
-                                            href="{{ route('products.index', ['created_at' => request('created_at') === 'asc' ? 'desc' : 'asc']) }}"><svg
+                                            href="{{ route('products.index', array_merge($queryParams, ['created_at' => request('created_at') === 'asc' ? 'desc' : 'asc']))  }}"><svg
                                                 class="w-3 h-3 ms-1.5" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                                 viewBox="0 0 24 24">
@@ -148,7 +152,7 @@
                                     <div class="flex items-center">
                                         Product
                                         <a
-                                            href="{{ route('products.index', ['name' => request('name') === 'asc' ? 'desc' : 'asc']) }}"><svg
+                                            href="{{ route('products.index', array_merge($queryParams, ['name' => request('name') === 'asc' ? 'desc' : 'asc'])) }}"><svg
                                                 class="w-3 h-3 ms-1.5" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                                 viewBox="0 0 24 24">
@@ -161,7 +165,7 @@
                                     <div class="flex items-center">
                                         Stroke
                                         <a
-                                            href="{{ route('products.index', ['stroke' => request('stroke') === 'asc' ? 'desc' : 'asc']) }}"><svg
+                                            href="{{ route('products.index', array_merge($queryParams, ['stroke' => request('stroke') === 'asc' ? 'desc' : 'asc'])) }}"><svg
                                                 class="w-3 h-3 ms-1.5" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                                 viewBox="0 0 24 24">
@@ -174,7 +178,7 @@
                                     <div class="flex items-center">
                                         Price
                                         <a
-                                            href="{{ route('products.index', ['price' => request('price') === 'asc' ? 'desc' : 'asc']) }}"><svg
+                                            href="{{ route('products.index', array_merge($queryParams, ['price' => request('price') === 'asc' ? 'desc' : 'asc'])) }}"><svg
                                                 class="w-3 h-3 ms-1.5" aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                                 viewBox="0 0 24 24">

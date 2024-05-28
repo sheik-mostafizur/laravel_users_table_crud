@@ -13,31 +13,30 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $keys =  ['name', 'stroke', 'price', 'created_at'];
+        $keys = ['name', 'stroke', 'price', 'created_at'];
+        $products = Product::query();
 
-        $paramKey = $request->keys() ? $request->keys()[0] : null;
-        $order = $request->input($paramKey);
-        $title = $request->input('title');
-
-        $products = null;
-        if (in_array($paramKey, $keys) && $order) {
-            if ($order == 'asc') {
-                $products = Product::asc($paramKey);
-            } else if ($order == 'desc') {
-                $products =  Product::desc($paramKey);
-            }
-        } else {
-            $products = Product::latest();
+        if ($title = $request->input('title')) {
+            $products->title($title);
         }
 
-        if($title){
-            $products = Product::title($title);
+        foreach ($keys as $key) {
+            if ($order = $request->input($key)) {
+                if ($order === 'asc') {
+                    $products->asc($key);
+                } elseif ($order === 'desc') {
+                    $products->desc($key);
+                }
+            }
         }
 
         return view('index', [
             'products' => $products->paginate(10)
         ]);
     }
+
+
+
     /**
      * Show the form for creating a new resource.
      */
